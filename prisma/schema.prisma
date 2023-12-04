@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("https://cjwumunkxbkcyvfnuxbc.supabase.co")
+}
+
+model issue {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  createdAt   DateTime @default(now())
+  status      Status   @default(OPEN)
+  updateAt    DateTime @updatedAt
+}
+
+enum Status {
+  OPEN
+  CLOSE
+  IN_PROGRESS
+}
