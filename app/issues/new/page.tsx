@@ -1,5 +1,5 @@
 "use client"
-import { Button, Callout, TextField, ThemePanel } from '@radix-ui/themes'
+import { Button, Callout, Text, TextField, ThemePanel } from '@radix-ui/themes'
 import { Theme } from '@radix-ui/themes'
 import { useForm , Controller} from 'react-hook-form'
 import SimpleMDE from "react-simplemde-editor"
@@ -8,14 +8,17 @@ import axios from 'axios'
 import { register } from 'module'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-  interface IssueTable{
-    title:String,
-    describtion:string
-  }
+import { zodResolver } from '@hookform/resolvers/zod'
+import { schema } from '@/app/validationSchema'
+  type IssueTable= Zod.infer<typeof schema>
 const page = () => {
   const router=useRouter()
   const [errorMessage,seterrorMessage]=useState('')
-  const {register ,control ,handleSubmit}=useForm<IssueTable>()
+  const {register ,control ,handleSubmit, formState:{errors}}=useForm<IssueTable>(
+    {
+      resolver:zodResolver(schema)
+    }
+  )
   return (
   <Theme appearance="light" accentColor="crimson" radius="none" scaling="110%">
     <div className="max-w-xl">
@@ -37,7 +40,9 @@ const page = () => {
     <TextField.Root>
         <TextField.Input placeholder='Title' {...register('title')}/>
     </TextField.Root>
+    {errors.title&&<Text color='red' as='p'>{errors.title.message}</Text>}
     <Controller name='describtion' control={control} render={({field})=><SimpleMDE placeholder='Description' {...field}/>}/>
+    {errors.describtion&&<Text color='red' as='p'>{errors.describtion.message}</Text>}
     <Button>Submit New Issue</Button>
     </form> 
       </div>
