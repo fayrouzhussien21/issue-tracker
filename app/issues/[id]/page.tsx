@@ -3,6 +3,8 @@ import prisma from '@/prisma/client'
 import { notFound } from 'next/navigation'
 import { issue } from '@prisma/client'
 import { string } from 'zod'
+import { Card, Heading, Text } from '@radix-ui/themes'
+import IssueStatusBadge from '@/app/components/IssueStatusBadge'
 interface Props{
     params:{id:string}
 }
@@ -18,10 +20,15 @@ const page = async({params}:Props) => {
         notFound()
   return (
     <div>
-        <p>{issue.title}</p>
+        <Heading>{issue.title}</Heading>
+        <div className='flex space-x-3 my-2'>
+        <IssueStatusBadge status={issue.status}></IssueStatusBadge>
+        <Text>{issue.createdAt.toDateString()}</Text>
+        </div>
+        <Card mt='4'>
+
         <p>{issue.description}</p>
-        <p>{issue.status}</p>
-        <p>{issue.createdAt.toDateString()}</p>
+        </Card>
     </div>
   )
 }
