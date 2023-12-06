@@ -34,9 +34,13 @@ const IssueForm = async({issue}:Props) => {
   const onsubmit=handleSubmit(async (data)=>{
     try {
       setSubmiting(true)
+      if(!issue){
       await axios.post('/api/issues',data)
-      router.push('/issues')
-      
+    }
+    else{
+        await axios.patch(`/api/issues/${issue.id}`,data)
+    }
+       router.push('/issues')
     } catch (error) {
       setSubmiting(false)
       seterrorMessage('unexpected error occured ')
@@ -59,7 +63,7 @@ const IssueForm = async({issue}:Props) => {
     <Text color='red' as='p'>{errors.title?.message}</Text>
     <Controller defaultValue={issue?.description} name='describtion' control={control} render={({field})=><SimpleMDE placeholder='Description' {...field}/>}/>
     <ErrorMessage >{errors.describtion?.message}</ErrorMessage>
-    <Button disabled={submiting}>Submit {submiting&&<Spinner/>}</Button>
+    <Button disabled={submiting}>{issue?'Update':'Submit'} {submiting&&<Spinner/>}</Button>
     </form> 
       </div>
     </Theme>
