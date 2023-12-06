@@ -13,7 +13,7 @@ const IssueDetails = ({issue}:{issue:issue}) => {
     <IssueStatusBadge status={issue.status}></IssueStatusBadge>
     <Text>{issue.createdAt.toDateString()}</Text>
     </div>
-    <Card mt='4' className='prose' >
+    <Card mt='4' className='prose max-w-full' >
     <ReactMarkdown>{issue.description}</ReactMarkdown>
     </Card>
     </>

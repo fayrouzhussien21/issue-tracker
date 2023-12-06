@@ -41,6 +41,7 @@ const IssueForm = async({issue}:Props) => {
         await axios.patch(`/api/issues/${issue.id}`,data)
     }
        router.push('/issues')
+       router.refresh()
     } catch (error) {
       setSubmiting(false)
       seterrorMessage('unexpected error occured ')
